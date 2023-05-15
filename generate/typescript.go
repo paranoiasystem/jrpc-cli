@@ -130,16 +130,8 @@ func generateTypesFromSchema(name string, schema model.JsonSchema) []string {
 		typesToReturn = append(typesToReturn, tempType)
 	} else if schema.Type == "array" {
 		if schema.Items.Type.(string) == "object" {
-			for key, value := range schema.Items.Properties {
-				innerSingleType, _ := value.Type.(string)
-				if innerSingleType == "object" {
-					typesToReturn = append(typesToReturn, generateTypesFromSchema(key, *value.Items)...)
-				} else if innerSingleType == "array" {
-					if value.Items.Type.(string) == "object" {
-						typesToReturn = append(typesToReturn, generateTypesFromSchema(key, *value.Items)...)
-					}
-				}
-			}
+			typesToReturn = append(typesToReturn, generateTypesFromSchema(name, *schema.Items)...)
+
 		} else {
 			typesToReturn = append(typesToReturn, "export type "+util.ToCamelCase(name, true)+" = "+typeMap[singleType]+"[]\r\n")
 		}

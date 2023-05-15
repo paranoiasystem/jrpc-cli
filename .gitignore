@@ -17,3 +17,6 @@
 build
 bin
 .idea
+
+TestInterface.ts
+schema.json
